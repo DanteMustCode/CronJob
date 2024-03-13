@@ -67,6 +67,28 @@ type CronJobSpec struct {
 	FailedJobsHistoryLimit *int32 `json:"failedJobsHistoryLimit,omitempty"`
 }
 
+// describes a Cron schedule.
+type CronSchedule struct {
+    // specifies the minute during which the job executes.
+    // +optional
+    Minute *CronField `json:"minute,omitempty"`
+    // specifies the hour during which the job executes.
+    // +optional
+    Hour *CronField `json:"hour,omitempty"`
+    // specifies the day of the month during which the job executes.
+    // +optional
+    DayOfMonth *CronField `json:"dayOfMonth,omitempty"`
+    // specifies the month during which the job executes.
+    // +optional
+    Month *CronField `json:"month,omitempty"`
+    // specifies the day of the week during which the job executes.
+    // +optional
+    DayOfWeek *CronField `json:"dayOfWeek,omitempty"`
+}
+
+// represents a Cron field specifier.
+type CronField string
+
 // ConcurrencyPolicy describes how the job will be handled.
 // Only one of the following concurrent policies may be specified.
 // If none of the following policies is specified, the default one
@@ -102,14 +124,15 @@ type CronJobStatus struct {
 
 //+kubebuilder:object:root=true
 //+kubebuilder:subresource:status
+//+kubebuilder:storageversion
 
 // CronJob is the Schema for the cronjobs API
 type CronJob struct {
-	metav1.TypeMeta   `json:",inline"`
-	metav1.ObjectMeta `json:"metadata,omitempty"`
+    metav1.TypeMeta   `json:",inline"`
+    metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   CronJobSpec   `json:"spec,omitempty"`
-	Status CronJobStatus `json:"status,omitempty"`
+    Spec   CronJobSpec   `json:"spec,omitempty"`
+    Status CronJobStatus `json:"status,omitempty"`
 }
 
 //+kubebuilder:object:root=true
